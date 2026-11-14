@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T4 La integral múltiple · Matemáticas II · Guía para aprobar</title>
+<meta name="description" content="Matemáticas II (UPCT, GIEyA): tema 4, La integral múltiple">
+<meta name="theme-color" content="#9c2f6b">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Matemáticas II</a><span class="sep">›</span><span>Segundo parcial · integral múltiple y EDO</span><span class="sep">›</span><span>T4 · La integral múltiple</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Primer parcial · integral y varias variables</div><a href="tema-01.html" style="--tc:var(--c2)">T1 La integral de Riemann</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Topología, límites y continuidad en varias variables</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Cálculo diferencial de funciones de varias variables</a><div class="grp">Segundo parcial · integral múltiple y EDO</div><a href="tema-04.html" style="--tc:var(--c5)" class="on" aria-current="page">T4 La integral múltiple</a><a href="tema-05.html" style="--tc:var(--c6)">T5 Ecuaciones diferenciales ordinarias</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas tipo resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Los boletines oficiales</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas de laboratorio</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c5);--tcs:var(--c5s)">
+<div class="sh"><span aria-hidden="true" class="badge">4</span><div class="shx"><p class="kick">Segundo parcial · integral múltiple y EDO · Tema 4</p><h2 id="t4">La integral múltiple</h2><div class="tags"><span class="tag">Segundo parcial · integral múltiple y EDO</span><span class="tag">Segundo parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> Calcular integrales dobles y triples en recintos, cambiar el orden de integración, usar coordenadas polares, cilíndricas y esféricas con su jacobiano, y aplicarlas a áreas, volúmenes y centros de masa.</p><p><b>Integral doble</b> sobre un recinto: si f es continua en un recinto básico, es integrable, y para \(f\ge0\) la integral es el <b>volumen</b> bajo la superficie. Propiedades: linealidad, monotonía y aditividad respecto de recintos que sólo comparten frontera.</p>
+<p><b>Teorema de Fubini</b>: la integral doble se calcula como <b>integral iterada</b>. Para un recinto de <b>tipo I</b> (\(a\le x\le b\), \(g_1(x)\le y\le g_2(x)\)):</p>
+<p>\(\displaystyle\iint_\Omega f=\int_a^b\left(\int_{g_1(x)}^{g_2(x)}f(x,y)\,dy\right)dx\)</p>
+<p>y análogamente en <b>tipo II</b> integrando primero en x. <b>Cambiar el orden</b> es una de las preguntas típicas: hay que dibujar el recinto, describirlo del otro modo y reescribir los límites (a veces hay que partirlo en dos).</p>
+<p><b>Cambio de variable</b>: \(\iint_\Omega f(x,y)dxdy=\iint_{\Omega'}f(x(u,v),y(u,v))\,|J|\,dudv\), con el <b>jacobiano</b> \(J=\frac{\partial(x,y)}{\partial(u,v)}\).</p>
+<ul><li><b>Polares</b> \(x=r\cos\theta\), \(y=r\operatorname{sen}\theta\) ⇒ \(|J|=r\): el \(dxdy\) se convierte en \(r\,dr\,d\theta\). Imprescindible con círculos, coronas y con \(x^2+y^2\) en el integrando.</li>
+<li><b>Cilíndricas</b> \((r,\theta,z)\) ⇒ \(|J|=r\) · <b>esféricas</b> \(x=\rho\operatorname{sen}\varphi\cos\theta\), \(y=\rho\operatorname{sen}\varphi\operatorname{sen}\theta\), \(z=\rho\cos\varphi\) ⇒ \(|J|=\rho^2\operatorname{sen}\varphi\).</li></ul>
+<p><b>Integral triple</b>: mismo esquema, describiendo el sólido como \(z\) entre dos superficies sobre una proyección plana.</p>
+<p><b>Aplicaciones</b>: área \(A=\iint1\,dA\); volumen \(V=\iiint1\,dV=\iint(z_{sup}-z_{inf})dA\); masa \(m=\iint\rho\,dA\); <b>centro de masas</b> \(\bar x=\frac1m\iint x\rho\,dA\); momentos de inercia \(I_x=\iint y^2\rho\,dA\).</p></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 4 <span class="src">7 símbolos</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Qué significa</th><th>Unidades · ejemplo</th></tr><tr><td class="sym">∬ f dA</td><td>Integral doble (volumen si f ≥ 0)</td><td class="u"></td></tr><tr><td class="sym">tipo I / II</td><td>dy dx  /  dx dy</td><td class="u"></td></tr><tr><td class="sym">Fubini</td><td>Integral iterada; límites exteriores constantes</td><td class="u"></td></tr><tr><td class="sym">|J|</td><td>Jacobiano del cambio</td><td class="u"></td></tr><tr><td class="sym">polares</td><td>dA = r dr dθ</td><td class="u"></td></tr><tr><td class="sym">esféricas</td><td>dV = ρ² sen φ dρ dφ dθ</td><td class="u"></td></tr><tr><td class="sym">centro de masas</td><td>x̄ = (1/m)∬xρ dA</td><td class="u"></td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - integral doble: recinto, orden y polares</p><div data-sim="doble"></div><figcaption>Mueve los controles y lee el recuadro: la figura calcula lo mismo que tú harías a mano en el examen.</figcaption></figure>
+<h3 id="t4-formulas">Lo que tienes que saber</h3>
+<div class="box key"><ul>
+<li>Tipo I: \(\int_a^b\int_{g_1(x)}^{g_2(x)}f\,dy\,dx\) · Tipo II: \(\int_c^d\int_{h_1(y)}^{h_2(y)}f\,dx\,dy\).</li>
+<li>Polares: \(dxdy=r\,dr\,d\theta\) · Cilíndricas: \(dV=r\,dr\,d\theta\,dz\) · Esféricas: \(dV=\rho^2\operatorname{sen}\varphi\,d\rho\,d\varphi\,d\theta\).</li>
+<li>\(J=\begin{vmatrix}x_u&x_v\\y_u&y_v\end{vmatrix}\) y se usa \(|J|\).</li>
+<li>\(A=\iint dA\) · \(V=\iint(z_{sup}-z_{inf})dA\) · \(\bar x=\frac{\iint x\rho\,dA}{\iint\rho\,dA}\).</li>
+<li>\(\int_0^{2\pi}\cos^2\theta\,d\theta=\int_0^{2\pi}\operatorname{sen}^2\theta\,d\theta=\pi\).</li></ul></div>
+<h3 id="t4-metodo">Cómo se resuelve</h3>
+<ol class="steps"><li><b>Dibuja el recinto</b>: sin el dibujo, los límites salen mal.</li><li>Decide el orden: si al integrar primero en y los límites son funciones sencillas, tipo I; si no, tipo II.</li><li>Si aparecen círculos o \(x^2+y^2\), pasa a polares y <b>no olvides el jacobiano r</b>; expresa el recinto como \(\theta\in[\alpha,\beta]\), \(r\in[r_1(\theta),r_2(\theta)]\).</li><li>Para cambiar el orden: describe el recinto con la otra variable, partiéndolo si hace falta.</li><li>Integra de dentro hacia fuera, tratando la variable exterior como constante.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul><li>Olvidar el jacobiano r (polares) o \(\rho^2\operatorname{sen}\varphi\) (esféricas).</li><li>Poner límites que dependen de la variable exterior en la integral exterior (los límites exteriores son SIEMPRE constantes).</li><li>Cambiar el orden sin dibujar: casi siempre se olvida partir el recinto.</li><li>Confundir \(\theta\) y \(\varphi\) en esféricas.</li></ul></div>
+<h3 id="t4-problema">Problema tipo</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p><b>(Tipo examen, hoja de integral múltiple)</b> a) Calcular \(\displaystyle\int_0^1\int_{x}^{1}e^{y^2}dy\,dx\) cambiando el orden de integración. b) Calcular \(\displaystyle\iint_D(x^2+y^2)\,dA\) donde D es la corona \(1\le x^2+y^2\le4\).</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p>a) Tal como está no se puede: \(e^{y^2}\) no tiene primitiva elemental. El recinto es \(0\le x\le1\), \(x\le y\le1\): el triángulo de vértices (0,0), (0,1) y (1,1), el que queda <b>por encima</b> de la diagonal.</p>
+<p>Descrito del otro modo: \(0\le y\le1\), \(0\le x\le y\) ⇒</p>
+<p>\(\int_0^1\int_0^ye^{y^2}dx\,dy=\int_0^1e^{y^2}\left[x\right]_0^y dy=\int_0^1y\,e^{y^2}dy=\left[\tfrac12e^{y^2}\right]_0^1=\mathbf{\tfrac{e-1}{2}}\approx0{,}8591\).</p>
+<p>El cambio de orden hace aparecer el factor y que falta para que la integral sea inmediata: ése es el truco del ejercicio.</p>
+<p>b) En <b>polares</b>, la corona es \(\theta\in[0,2\pi]\), \(r\in[1,2]\), y el integrando \(x^2+y^2=r^2\), con \(dA=r\,dr\,d\theta\):</p>
+<p>\(\iint_D(x^2+y^2)dA=\int_0^{2\pi}\!\!\int_1^2r^2\cdot r\,dr\,d\theta=\int_0^{2\pi}\left[\frac{r^4}{4}\right]_1^2d\theta=\int_0^{2\pi}\frac{15}{4}d\theta=\mathbf{\frac{15\pi}{2}}\approx23{,}56\).</p></div></details></div>
+<h3 id="t4-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Qué jacobiano llevan las coordenadas polares, cilíndricas y esféricas?</summary><div class="inner"><p>Polares y cilíndricas, \(|J|=r\) (\(dA=r\,dr\,d\theta\), \(dV=r\,dr\,d\theta\,dz\)); esféricas, \(|J|=\rho^2\operatorname{sen}\varphi\).</p></div></details><details class="paso"><summary><span class="pn">2</span>¿Pueden depender de x los límites de la integral EXTERIOR?</summary><div class="inner"><p>No: los límites exteriores son siempre constantes. Sólo los interiores pueden depender de las variables que aún quedan por integrar.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Para qué sirve cambiar el orden de integración?</summary><div class="inner"><p>Para que la integral interior sea calculable (como en \(\int\int e^{y^2}\)) o para evitar partir el recinto. Siempre hay que dibujar la región y describirla del otro modo.</p></div></details><details class="paso"><summary><span class="pn">4</span>Volumen del sólido limitado por \(z=x^2+y^2\) y \(z=4\).</summary><div class="inner"><p>En polares: \(V=\int_0^{2\pi}\int_0^2(4-r^2)r\,dr\,d\theta=2\pi\left[2r^2-\frac{r^4}{4}\right]_0^2=2\pi(8-4)=\mathbf{8\pi}\).</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Cómo se calcula el centro de masas de una lámina?</summary><div class="inner"><p>\(\bar x=\frac{1}{m}\iint x\rho\,dA\) y \(\bar y=\frac1m\iint y\rho\,dA\), con \(m=\iint\rho\,dA\). Si la densidad es constante, se simplifica y queda el centroide geométrico.</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-03.html"><small>← Anterior</small>T3 · Cálculo diferencial de funciones de varias variables</a><a class="nx" href="tema-05.html"><small>Siguiente →</small>T5 · Ecuaciones diferenciales ordinarias</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Matemáticas II (UPCT, GIEyA) · Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

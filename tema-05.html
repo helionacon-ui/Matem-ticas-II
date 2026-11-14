@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T5 Ecuaciones diferenciales ordinarias · Matemáticas II · Guía para aprobar</title>
+<meta name="description" content="Matemáticas II (UPCT, GIEyA): tema 5, Ecuaciones diferenciales ordinarias">
+<meta name="theme-color" content="#9c2f6b">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Matemáticas II</a><span class="sep">›</span><span>Segundo parcial · integral múltiple y EDO</span><span class="sep">›</span><span>T5 · Ecuaciones diferenciales ordinarias</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Primer parcial · integral y varias variables</div><a href="tema-01.html" style="--tc:var(--c2)">T1 La integral de Riemann</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Topología, límites y continuidad en varias variables</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Cálculo diferencial de funciones de varias variables</a><div class="grp">Segundo parcial · integral múltiple y EDO</div><a href="tema-04.html" style="--tc:var(--c5)">T4 La integral múltiple</a><a href="tema-05.html" style="--tc:var(--c6)" class="on" aria-current="page">T5 Ecuaciones diferenciales ordinarias</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas tipo resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Los boletines oficiales</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas de laboratorio</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c6);--tcs:var(--c6s)">
+<div class="sh"><span aria-hidden="true" class="badge">5</span><div class="shx"><p class="kick">Segundo parcial · integral múltiple y EDO · Tema 5</p><h2 id="t5">Ecuaciones diferenciales ordinarias</h2><div class="tags"><span class="tag">Segundo parcial · integral múltiple y EDO</span><span class="tag">Segundo parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> Clasificar una EDO, resolver las de primer orden (separables, homogéneas, exactas, lineales y de Bernoulli) y las lineales de segundo orden con coeficientes constantes, y plantear problemas de valor inicial.</p><p>Una <b>EDO</b> relaciona una función con sus derivadas; su <b>orden</b> es el de la derivada más alta. Una <b>solución general</b> lleva tantas constantes como el orden; con condiciones iniciales (<b>problema de valor inicial</b>) se determinan.</p>
+<p><b>Primer orden</b> — identifica el tipo <i>antes</i> de calcular:</p>
+<ul><li><b>Variables separables</b> \(y'=f(x)g(y)\): se separa \(\frac{dy}{g(y)}=f(x)dx\) y se integran los dos lados.</li>
+<li><b>Homogéneas</b> \(y'=F(y/x)\) (todos los términos del mismo grado): cambio \(u=y/x\) ⇒ \(y=ux\), \(y'=u+xu'\), y queda separable.</li>
+<li><b>Exactas</b> \(M\,dx+N\,dy=0\) con \(M_y=N_x\): existe \(U\) con \(U_x=M\), \(U_y=N\) y la solución es \(U(x,y)=C\). Si no es exacta, a veces hay un <b>factor integrante</b> \(\mu(x)\) o \(\mu(y)\).</li>
+<li><b>Lineales</b> \(y'+P(x)y=Q(x)\): factor integrante \(\mu=e^{\int P\,dx}\) ⇒ \(y=\dfrac{1}{\mu}\left(\int\mu Q\,dx+C\right)\).</li>
+<li><b>Bernoulli</b> \(y'+Py=Qy^n\): el cambio \(z=y^{1-n}\) la convierte en lineal.</li></ul>
+<p><b>Lineales de segundo orden con coeficientes constantes</b> \(ay''+by'+cy=g(x)\): la solución es \(y=y_h+y_p\).</p>
+<p><b>Homogénea</b>: con el polinomio característico \(a\lambda^2+b\lambda+c=0\):</p>
+<ul><li>Raíces reales distintas: \(y_h=C_1e^{\lambda_1x}+C_2e^{\lambda_2x}\).</li>
+<li>Raíz doble: \(y_h=(C_1+C_2x)e^{\lambda x}\).</li>
+<li>Complejas \(\lambda=\alpha\pm\beta i\): \(y_h=e^{\alpha x}(C_1\cos\beta x+C_2\operatorname{sen}\beta x)\).</li></ul>
+<p><b>Particular</b> (coeficientes indeterminados): se ensaya una función del mismo tipo que \(g(x)\) — polinomio, \(e^{rx}\), \(\cos\beta x\)/\(\operatorname{sen}\beta x\) o producto de ellos. <b>Si el ensayo ya es solución de la homogénea, se multiplica por \(x\)</b> (o por \(x^2\) si la raíz es doble): es el error más repetido. También puede usarse la <b>variación de constantes</b>.</p>
+<p><b>Aplicaciones</b> típicas en ingeniería: desintegración y crecimiento (\(y'=ky\)), enfriamiento de Newton (\(T'=k(T-T_a)\)), circuitos RC y RL (\(RC\,v'+v=E\)), caída con rozamiento y el oscilador \(my''+cy'+ky=F(t)\), donde el discriminante decide si el régimen es sobreamortiguado, crítico u oscilatorio.</p></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 5 <span class="src">8 símbolos</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Qué significa</th><th>Unidades · ejemplo</th></tr><tr><td class="sym">orden</td><td>Derivada más alta que aparece</td><td class="u"></td></tr><tr><td class="sym">separables</td><td>dy/g(y) = f(x)dx</td><td class="u"></td></tr><tr><td class="sym">homogénea</td><td>y′ = F(y/x); cambio u = y/x</td><td class="u"></td></tr><tr><td class="sym">exacta</td><td>M_y = N_x ⇒ U(x,y) = C</td><td class="u"></td></tr><tr><td class="sym">lineal</td><td>y′ + Py = Q; μ = e^(∫P)</td><td class="u"></td></tr><tr><td class="sym">Bernoulli</td><td>y′ + Py = Qyⁿ; z = y^(1−n)</td><td class="u"></td></tr><tr><td class="sym">λ característica</td><td>aλ² + bλ + c = 0</td><td class="u"></td></tr><tr><td class="sym">y = y_h + y_p</td><td>Homogénea más particular</td><td class="u"></td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - campo de direcciones y soluciones de una EDO</p><div data-sim="edo"></div><figcaption>Mueve los controles y lee el recuadro: la figura calcula lo mismo que tú harías a mano en el examen.</figcaption></figure>
+<h3 id="t5-formulas">Lo que tienes que saber</h3>
+<div class="box key"><ul>
+<li>Separables: \(\int\frac{dy}{g(y)}=\int f(x)dx\) · Homogéneas: \(u=y/x\).</li>
+<li>Exactas: \(M_y=N_x\) ⇒ \(U(x,y)=C\) con \(U_x=M\), \(U_y=N\).</li>
+<li>Lineal: \(\mu=e^{\int P}\), \(y=\frac1\mu\left(\int\mu Q+C\right)\) · Bernoulli: \(z=y^{1-n}\).</li>
+<li>2.º orden: \(a\lambda^2+b\lambda+c=0\) ⇒ \(e^{\lambda x}\), \((C_1+C_2x)e^{\lambda x}\) o \(e^{\alpha x}(C_1\cos\beta x+C_2\operatorname{sen}\beta x)\).</li>
+<li>Particular: ensayo del tipo de \(g(x)\), multiplicado por \(x^k\) si coincide con la homogénea.</li></ul></div>
+<h3 id="t5-metodo">Cómo se resuelve</h3>
+<ol class="steps"><li><b>Clasifica</b>: ¿se separan las variables? ¿es homogénea (mismo grado)? ¿cumple \(M_y=N_x\)? ¿tiene la forma \(y'+Py=Q\)? ¿hay \(y^n\) a la derecha (Bernoulli)?</li><li>Aplica el método correspondiente y no olvides la constante.</li><li>Si hay condición inicial, sustitúyela AL FINAL para hallar C.</li><li>En las de segundo orden: resuelve el polinomio característico, escribe \(y_h\), ensaya \(y_p\) (multiplicando por x si hace falta) y suma.</li><li>Comprueba la solución derivando y sustituyendo: cuesta un minuto y asegura el problema.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul><li>Perder la constante de integración o ponerla sólo en un lado.</li><li>Olvidar multiplicar por x el ensayo de \(y_p\) cuando coincide con una solución de la homogénea.</li><li>Confundir homogénea (grado) con lineal homogénea (segundo miembro nulo).</li><li>Aplicar la condición inicial antes de tener la solución general.</li><li>En exactas, no comprobar \(M_y=N_x\) antes de integrar.</li></ul></div>
+<h3 id="t5-problema">Problema tipo</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p><b>(Tipo examen)</b> a) Resolver \(y'-\dfrac{2y}{x}=x^2\) con \(y(1)=0\). b) Resolver \(y''-3y'+2y=4e^{2x}\).</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p>a) Es <b>lineal</b> con \(P=-\frac2x\) y \(Q=x^2\). Factor integrante: \(\mu=e^{\int-2/x\,dx}=e^{-2\ln x}=x^{-2}\).</p>
+<p>\((x^{-2}y)'=x^{-2}x^2=1\) ⇒ \(x^{-2}y=x+C\) ⇒ \(y=x^3+Cx^2\).</p>
+<p>Con \(y(1)=0\): \(0=1+C\) ⇒ \(C=-1\) ⇒ <b>\(y=x^3-x^2\)</b>. (Comprobación: \(y'=3x^2-2x\) y \(y'-\frac{2y}{x}=3x^2-2x-2x^2+2x=x^2\) ✓.)</p>
+<p>b) Polinomio característico: \(\lambda^2-3\lambda+2=0\) ⇒ \(\lambda=1,2\) ⇒ \(y_h=C_1e^{x}+C_2e^{2x}\).</p>
+<p>El segundo miembro es \(4e^{2x}\) y <b>\(e^{2x}\) ya está en la homogénea</b> ⇒ se ensaya \(y_p=Axe^{2x}\):</p>
+<p>\(y_p'=A(1+2x)e^{2x}\), \(y_p''=A(4+4x)e^{2x}\) ⇒ \(A(4+4x)-3A(1+2x)+2Ax=A(4+4x-3-6x+2x)=A\) ⇒ \(A=4\).</p>
+<p>Solución general: <b>\(y=C_1e^{x}+C_2e^{2x}+4xe^{2x}\)</b>.</p></div></details></div>
+<h3 id="t5-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Cómo se reconoce una EDO homogénea y cómo se resuelve?</summary><div class="inner"><p>Todos los términos tienen el mismo grado, de modo que \(y'=F(y/x)\). Con el cambio \(u=y/x\) (\(y=ux\), \(y'=u+xu'\)) se vuelve de variables separables.</p></div></details><details class="paso"><summary><span class="pn">2</span>Factor integrante de \(y'+P(x)y=Q(x)\).</summary><div class="inner"><p>\(\mu(x)=e^{\int P(x)dx}\). Multiplicando, el lado izquierdo se convierte en \((\mu y)'\) y basta integrar.</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Cuándo hay que multiplicar por x el ensayo de la solución particular?</summary><div class="inner"><p>Cuando el ensayo coincide con una solución de la homogénea; por \(x^2\) si la raíz característica es doble. Es el fallo más frecuente en el examen.</p></div></details><details class="paso"><summary><span class="pn">4</span>\(y''+4y=0\): solución general.</summary><div class="inner"><p>\(\lambda^2+4=0\Rightarrow\lambda=\pm2i\) ⇒ \(y=C_1\cos2x+C_2\operatorname{sen}2x\): un oscilador armónico de frecuencia 2.</p></div></details><details class="paso"><summary><span class="pn">5</span>¿Cómo se comprueba que una EDO \(M\,dx+N\,dy=0\) es exacta?</summary><div class="inner"><p>Verificando \(\frac{\partial M}{\partial y}=\frac{\partial N}{\partial x}\). Entonces existe U con \(U_x=M\) y \(U_y=N\), y la solución implícita es \(U(x,y)=C\).</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-04.html"><small>← Anterior</small>T4 · La integral múltiple</a><a class="nx" href="cuestiones.html"><small>Siguiente →</small>Cuestiones de teoría</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Matemáticas II (UPCT, GIEyA) · Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

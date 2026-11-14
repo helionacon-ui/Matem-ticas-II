@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T3 Cálculo diferencial de funciones de varias variables · Matemáticas II · Guía para aprobar</title>
+<meta name="description" content="Matemáticas II (UPCT, GIEyA): tema 3, Cálculo diferencial de funciones de varias variables">
+<meta name="theme-color" content="#9c2f6b">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Matemáticas II</a><span class="sep">›</span><span>Primer parcial · integral y varias variables</span><span class="sep">›</span><span>T3 · Cálculo diferencial de funciones de varias variables</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Primer parcial · integral y varias variables</div><a href="tema-01.html" style="--tc:var(--c2)">T1 La integral de Riemann</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Topología, límites y continuidad en varias variables</a><a href="tema-03.html" style="--tc:var(--c4)" class="on" aria-current="page">T3 Cálculo diferencial de funciones de varias variables</a><div class="grp">Segundo parcial · integral múltiple y EDO</div><a href="tema-04.html" style="--tc:var(--c5)">T4 La integral múltiple</a><a href="tema-05.html" style="--tc:var(--c6)">T5 Ecuaciones diferenciales ordinarias</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas tipo resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Los boletines oficiales</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas de laboratorio</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c4);--tcs:var(--c4s)">
+<div class="sh"><span aria-hidden="true" class="badge">3</span><div class="shx"><p class="kick">Primer parcial · integral y varias variables · Tema 3</p><h2 id="t3">Cálculo diferencial de funciones de varias variables</h2><div class="tags"><span class="tag">Primer parcial · integral y varias variables</span><span class="tag">Primer parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> Calcular derivadas parciales y direccionales, estudiar la diferenciabilidad, aplicar la regla de la cadena y el teorema de la función implícita, y clasificar extremos libres y condicionados.</p><p><b>Derivadas parciales</b>: \(\frac{\partial f}{\partial x}\) se deriva tratando las demás variables como constantes. En un punto conflictivo (origen de una función a trozos) hay que usar la <b>definición</b>: \(\frac{\partial f}{\partial x}(0,0)=\lim_{t\to0}\frac{f(t,0)-f(0,0)}{t}\).</p>
+<p><b>Diferenciabilidad</b>: f es diferenciable en \(\vec x_0\) si existe una aplicación lineal (la diferencial) tal que</p>
+<p>\(\lim_{\vec h\to\vec 0}\dfrac{f(\vec x_0+\vec h)-f(\vec x_0)-\nabla f(\vec x_0)\cdot\vec h}{\|\vec h\|}=0\).</p>
+<p><b>Jerarquía</b> que hay que tener clara: parciales continuas ⇒ <b>diferenciable</b> ⇒ continua y existen todas las direccionales. Los recíprocos son falsos: hay funciones con todas las parciales en un punto que no son ni continuas allí. La <b>condición suficiente</b> (parciales continuas en un entorno) es la que se usa en la práctica.</p>
+<p><b>Plano tangente</b>: \(z=f(a,b)+f_x(a,b)(x-a)+f_y(a,b)(y-b)\).</p>
+<p><b>Gradiente y derivada direccional</b>: si f es diferenciable, \(D_{\vec v}f=\nabla f\cdot\vec v\) con \(\|\vec v\|=1\). El gradiente apunta en la dirección de <b>máximo crecimiento</b> y su módulo es ese máximo; es <b>perpendicular a las curvas de nivel</b>.</p>
+<p><b>Regla de la cadena</b>: para \(z=f(x,y)\) con \(x=x(t)\), \(y=y(t)\): \(\frac{dz}{dt}=f_x x'+f_y y'\). En general, la matriz jacobiana de la composición es el producto de jacobianas: \(J_{f\circ g}=J_f\cdot J_g\).</p>
+<p><b>Teorema de la función implícita</b>: si \(F(x,y)=0\) con \(F\) de clase \(C^1\), \(F(a,b)=0\) y \(\frac{\partial F}{\partial y}(a,b)\neq0\), entonces y queda definida implícitamente como función de x cerca de (a,b) y</p>
+<p>\(y'=-\dfrac{F_x}{F_y}\) · en tres variables, \(\dfrac{\partial z}{\partial x}=-\dfrac{F_x}{F_z}\), \(\dfrac{\partial z}{\partial y}=-\dfrac{F_y}{F_z}\).</p>
+<p><b>Extremos libres</b>: puntos críticos con \(\nabla f=\vec0\). Se clasifican con el <b>hessiano</b> \(H=\begin{pmatrix}f_{xx}&f_{xy}\\f_{xy}&f_{yy}\end{pmatrix}\) y \(\Delta=f_{xx}f_{yy}-f_{xy}^2\):</p>
+<ul><li>\(\Delta>0\) y \(f_{xx}>0\) ⇒ <b>mínimo</b> relativo · \(\Delta>0\) y \(f_{xx}<0\) ⇒ <b>máximo</b>.</li>
+<li>\(\Delta<0\) ⇒ <b>punto de silla</b> · \(\Delta=0\) ⇒ caso dudoso (hay que estudiarlo aparte).</li></ul>
+<p><b>Extremos condicionados (Lagrange)</b>: para optimizar \(f\) sujeta a \(g=0\), se construye \(L=f-\lambda g\) y se resuelve \(\nabla L=\vec0\) junto con \(g=0\). En un compacto, además hay que estudiar la frontera y comparar valores para dar los extremos absolutos.</p></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 3 <span class="src">8 símbolos</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Qué significa</th><th>Unidades · ejemplo</th></tr><tr><td class="sym">∂f/∂x</td><td>Derivada parcial</td><td class="u"></td></tr><tr><td class="sym">∇f</td><td>Gradiente (f_x, f_y)</td><td class="u"></td></tr><tr><td class="sym">D_v f</td><td>∇f · v con ‖v‖ = 1</td><td class="u"></td></tr><tr><td class="sym">diferenciable</td><td>⇒ continua y existen las direccionales</td><td class="u"></td></tr><tr><td class="sym">J</td><td>Matriz jacobiana; cadena J(f∘g) = J_f·J_g</td><td class="u"></td></tr><tr><td class="sym">implícita</td><td>y' = −F_x/F_y</td><td class="u"></td></tr><tr><td class="sym">Δ</td><td>f_xx·f_yy − f_xy² (hessiano)</td><td class="u"></td></tr><tr><td class="sym">Lagrange</td><td>∇f = λ∇g con g = 0</td><td class="u"></td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - curvas de nivel, gradiente y derivada direccional</p><div data-sim="gradiente"></div><figcaption>Mueve los controles y lee el recuadro: la figura calcula lo mismo que tú harías a mano en el examen.</figcaption></figure>
+<h3 id="t3-formulas">Lo que tienes que saber</h3>
+<div class="box key"><ul>
+<li>\(\nabla f=(f_x,f_y)\); plano tangente \(z=f_0+f_x(x-a)+f_y(y-b)\).</li>
+<li>\(D_{\vec v}f=\nabla f\cdot\vec v\) con \(\|\vec v\|=1\); máximo \(\|\nabla f\|\) en la dirección del gradiente.</li>
+<li>Cadena: \(\frac{dz}{dt}=f_xx'+f_yy'\); \(J_{f\circ g}=J_f\cdot J_g\).</li>
+<li>Implícita: \(y'=-F_x/F_y\); \(z_x=-F_x/F_z\), \(z_y=-F_y/F_z\).</li>
+<li>Hessiano: \(\Delta=f_{xx}f_{yy}-f_{xy}^2\) (&gt;0 con \(f_{xx}>0\): mínimo; &gt;0 con \(f_{xx}<0\): máximo; &lt;0: silla).</li>
+<li>Lagrange: \(\nabla f=\lambda\nabla g\) junto con \(g=0\).</li></ul></div>
+<h3 id="t3-metodo">Cómo se resuelve</h3>
+<ol class="steps"><li>Parciales: deriva tratando lo demás como constante; en puntos conflictivos, usa la DEFINICIÓN con el límite.</li><li>Diferenciabilidad: si las parciales son continuas en un entorno, ya es diferenciable; si no, aplica la definición con el límite y acota en polares.</li><li>Cadena: dibuja el árbol de dependencias y suma un producto por cada camino.</li><li>Extremos: resuelve \(\nabla f=0\), calcula el hessiano en cada punto crítico y clasifica con \(\Delta\) y \(f_{xx}\).</li><li>Con restricción, Lagrange; en un compacto, compara interior y frontera.</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul><li>Suponer que si existen las parciales la función es diferenciable (¡o continua!): es falso.</li><li>Usar \(D_{\vec v}f=\nabla f\cdot\vec v\) sin normalizar \(\vec v\) o sin comprobar la diferenciabilidad.</li><li>Olvidar el signo menos en \(y'=-F_x/F_y\).</li><li>Clasificar un punto crítico con \(\Delta=0\) como si fuera concluyente.</li><li>En Lagrange, olvidar la propia restricción como ecuación del sistema.</li></ul></div>
+<h3 id="t3-problema">Problema tipo</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p><b>(Examen Matemáticas II, parcial 1, abril 2021 + ejercicios de extremos)</b> a) Para \(g(x,y)=(x,y,y^2)\) y \(f(x,y,z)=\dots\), calcular la jacobiana de \(f\circ g\) por la regla de la cadena. b) Hallar y clasificar los extremos relativos de \(f(x,y)=x^3+y^3-3xy\).</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p>a) La <b>regla de la cadena en forma matricial</b> es \(J_{f\circ g}(x,y)=J_f(g(x,y))\cdot J_g(x,y)\), con</p>
+<p>\(J_g=\begin{pmatrix}1&0\\0&1\\0&2y\end{pmatrix}\) (3×2) y \(J_f=(f_x\ f_y\ f_z)\) (1×3) ⇒ el producto es 1×2:</p>
+<p>\(J_{f\circ g}=\left(f_x,\ f_y+2y\,f_z\right)\) evaluado en \((x,y,y^2)\). Es decir, \(\frac{\partial(f\circ g)}{\partial y}=f_y+2yf_z\): hay dos caminos de y a f y se suman.</p>
+<p>b) \(f(x,y)=x^3+y^3-3xy\). Puntos críticos: \(f_x=3x^2-3y=0\) y \(f_y=3y^2-3x=0\) ⇒ \(y=x^2\) y \(x=y^2=x^4\) ⇒ \(x(x^3-1)=0\) ⇒ <b>(0,0)</b> y <b>(1,1)</b>.</p>
+<p>Hessiano: \(f_{xx}=6x\), \(f_{yy}=6y\), \(f_{xy}=-3\) ⇒ \(\Delta=36xy-9\).</p>
+<p>En <b>(0,0)</b>: \(\Delta=-9<0\) ⇒ <b>punto de silla</b>.</p>
+<p>En <b>(1,1)</b>: \(\Delta=36-9=27>0\) y \(f_{xx}=6>0\) ⇒ <b>mínimo relativo</b>, con \(f(1,1)=1+1-3=-1\).</p>
+<p>No hay máximos relativos, y la función no está acotada (\(f\to\pm\infty\) en las diagonales), así que no hay extremos absolutos en \(\mathbb R^2\).</p></div></details></div>
+<h3 id="t3-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Qué implica la diferenciabilidad y qué no implica?</summary><div class="inner"><p>Diferenciable ⇒ continua, existen todas las parciales y todas las direccionales, y \(D_{\vec v}f=\nabla f\cdot\vec v\). Que existan las parciales NO implica diferenciabilidad ni continuidad.</p></div></details><details class="paso"><summary><span class="pn">2</span>¿En qué dirección crece más rápido f y cuánto?</summary><div class="inner"><p>En la del gradiente \(\nabla f\), y la tasa máxima de crecimiento es \(\|\nabla f\|\). En la dirección opuesta decrece lo mismo; perpendicularmente (a lo largo de la curva de nivel) la derivada direccional es 0.</p></div></details><details class="paso"><summary><span class="pn">3</span>Clasifica un punto crítico con \(\Delta=f_{xx}f_{yy}-f_{xy}^2<0\).</summary><div class="inner"><p>Es un <b>punto de silla</b>: no es ni máximo ni mínimo (la función crece en una dirección y decrece en otra).</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Qué hipótesis necesita el teorema de la función implícita y qué garantiza?</summary><div class="inner"><p>F de clase \(C^1\), \(F(a,b)=0\) y \(F_y(a,b)\neq0\). Garantiza que cerca de (a,b) la ecuación define y = y(x) de clase \(C^1\) con \(y'=-F_x/F_y\).</p></div></details><details class="paso"><summary><span class="pn">5</span>Plantea Lagrange para maximizar \(f(x,y)=xy\) sujeta a \(x+y=10\).</summary><div class="inner"><p>\(L=xy-\lambda(x+y-10)\): \(y=\lambda\), \(x=\lambda\), \(x+y=10\) ⇒ \(x=y=5\) y máximo \(f=25\) (el rectángulo de perímetro fijo con área máxima es el cuadrado).</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="tema-02.html"><small>← Anterior</small>T2 · Topología, límites y continuidad en varias variables</a><a class="nx" href="tema-04.html"><small>Siguiente →</small>T4 · La integral múltiple</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Matemáticas II (UPCT, GIEyA) · Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>

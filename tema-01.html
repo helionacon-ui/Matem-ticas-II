@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T1 La integral de Riemann · Matemáticas II · Guía para aprobar</title>
+<meta name="description" content="Matemáticas II (UPCT, GIEyA): tema 1, La integral de Riemann">
+<meta name="theme-color" content="#9c2f6b">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="hub-bar" style="max-width:1180px;margin:0 auto;padding:10px 16px 0"><a href="https://helionacon-ui.github.io/GIEIA-UPCT/" style="display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 system-ui,sans-serif;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none">← Todas las guías GIEyA</a><p class="fecha" style="margin:6px 0 0;max-width:none;font:13px/1.45 system-ui,sans-serif;color:var(--muted)">Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p></div>
+<div class="crumb"><a href="index.html">Matemáticas II</a><span class="sep">›</span><span>Primer parcial · integral y varias variables</span><span class="sep">›</span><span>T1 · La integral de Riemann</span></div><a href="#top" class="totop" id="totop" aria-label="Volver arriba">↑</a>
+<div class="wrap" id="top">
+<nav aria-label="Índice" class="toc"><a href="index.html" style="--tc:var(--c0)">Portada</a><div class="grp">Empezar</div><a href="index.html#cero" style="--tc:var(--c0)">Empieza aquí desde cero</a><a href="plan.html" style="--tc:var(--c0)">Cómo es la evaluación</a><a href="index.html#progreso" style="--tc:var(--c0)">Tu progreso</a><div class="grp">Primer parcial · integral y varias variables</div><a href="tema-01.html" style="--tc:var(--c2)" class="on" aria-current="page">T1 La integral de Riemann</a><a href="tema-02.html" style="--tc:var(--c3)">T2 Topología, límites y continuidad en varias variables</a><a href="tema-03.html" style="--tc:var(--c4)">T3 Cálculo diferencial de funciones de varias variables</a><div class="grp">Segundo parcial · integral múltiple y EDO</div><a href="tema-04.html" style="--tc:var(--c5)">T4 La integral múltiple</a><a href="tema-05.html" style="--tc:var(--c6)">T5 Ecuaciones diferenciales ordinarias</a><div class="grp">Practicar</div><a href="cuestiones.html" style="--tc:var(--c8)">Cuestiones de teoría respondidas</a><a href="examenes.html" style="--tc:var(--c8)">Problemas tipo resueltos</a><a href="problemas.html" style="--tc:var(--c8)">Los boletines oficiales</a><a href="laboratorio.html" style="--tc:var(--c7)">Prácticas de laboratorio</a><a href="formulario.html" style="--tc:var(--c8)">Formulario</a></nav>
+<main>
+<section class="sec tema" style="--tc:var(--c2);--tcs:var(--c2s)">
+<div class="sh"><span aria-hidden="true" class="badge">1</span><div class="shx"><p class="kick">Primer parcial · integral y varias variables · Tema 1</p><h2 id="t1">La integral de Riemann</h2><div class="tags"><span class="tag">Primer parcial · integral y varias variables</span><span class="tag">Primer parcial</span></div></div></div>
+<div class="zero"><p class="ft">Desde cero</p><p><b>Objetivo:</b> Calcular primitivas con los cuatro métodos, aplicar la regla de Barrow, estudiar integrales impropias y resolver áreas, volúmenes de revolución y longitudes de arco.</p><p><b>Integral definida</b>: límite de las sumas de Riemann \(\sum f(c_i)\Delta x_i\) al afinar la partición. Si f es continua en [a,b], es integrable. Propiedades: linealidad, aditividad respecto del intervalo (\(\int_a^b=\int_a^c+\int_c^b\)) y monotonía.</p>
+<p><b>Teorema de la media</b>: si f es continua en [a,b], existe \(c\in(a,b)\) con \(\int_a^bf=f(c)(b-a)\): el área equivale a la de un rectángulo de altura \(f(c)\), el <b>valor medio</b> de la función.</p>
+<p><b>Teorema fundamental del cálculo</b>: \(F(x)=\int_a^xf(t)dt\) es derivable con \(F'(x)=f(x)\). Combinado con la <b>regla de Barrow</b> \(\int_a^bf=F(b)-F(a)\), convierte el cálculo de áreas en una búsqueda de primitivas. Con límites variables: \(\frac{d}{dx}\int_{u(x)}^{v(x)}f=f(v)v'-f(u)u'\).</p>
+<p><b>Los cuatro métodos de integración</b>:</p>
+<ul><li><b>Inmediatas</b>: reconocer \(\int f'(x)g(f(x))dx\); la mitad de los exámenes se resuelve ajustando una constante.</li>
+<li><b>Cambio de variable</b>: para raíces \(\sqrt{a^2-x^2}\) (x = a sen u), \(\sqrt{a^2+x^2}\) (x = a tg u), \(\sqrt{x^2-a^2}\) (x = a sec u), exponenciales y trigonométricas. <b>Al cambiar la variable en una integral definida hay que cambiar también los límites</b>.</li>
+<li><b>Por partes</b> \(\int u\,dv=uv-\int v\,du\): regla ALPES (Arcos, Logaritmos, Polinomios, Exponenciales, Senos) para elegir u.</li>
+<li><b>Racionales</b>: descomposición en fracciones simples. Con <b>raíces complejas múltiples</b> se usa el <b>método de Hermite</b>, que aparece en el examen de 2021: \(\dfrac{P}{Q}=\dfrac{Ax+B}{x^2+px+q}+\dfrac{d}{dx}\left(\dfrac{Cx+D}{x^2+px+q}\right)\).</li></ul>
+<p><b>Integrales impropias</b>: se calculan con un límite.</p>
+<ul><li><b>Primera especie</b> (intervalo no acotado): \(\int_a^{\infty}f=\lim_{t\to\infty}\int_a^tf\).</li>
+<li><b>Segunda especie</b> (la función no está acotada en un extremo): \(\int_a^bf=\lim_{t\to b^-}\int_a^tf\).</li></ul>
+<p>Convergen si el límite es finito. Criterios útiles: \(\int_1^\infty\frac{dx}{x^p}\) converge si \(p>1\); \(\int_0^1\frac{dx}{x^p}\) converge si \(p<1\).</p>
+<p><b>Aplicaciones</b>: área entre curvas \(\int|f-g|\); <b>volumen de revolución</b> alrededor de OX por discos \(V=\pi\int_a^b f(x)^2dx\) y alrededor de OY por capas \(V=2\pi\int_a^bxf(x)dx\); longitud de arco \(L=\int\sqrt{1+f'^2}\); área lateral \(S=2\pi\int f\sqrt{1+f'^2}\).</p></div>
+<details class="nom"><summary><span aria-hidden="true" class="nom-ic">Aa</span>Nomenclatura del tema 1 <span class="src">8 símbolos</span></summary><div class="inner">
+<div class="tw"><table><tr><th>Símbolo</th><th>Qué significa</th><th>Unidades · ejemplo</th></tr><tr><td class="sym">∫ₐᵇ f</td><td>Integral definida (Barrow: F(b) − F(a))</td><td class="u"></td></tr><tr><td class="sym">F'(x) = f(x)</td><td>Teorema fundamental del cálculo</td><td class="u"></td></tr><tr><td class="sym">∫u dv</td><td>Integración por partes</td><td class="u">uv − ∫v du</td></tr><tr><td class="sym">Hermite</td><td>Racionales con raíces múltiples</td><td class="u"></td></tr><tr><td class="sym">impropia</td><td>1.ª especie (∞) · 2.ª especie (no acotada)</td><td class="u"></td></tr><tr><td class="sym">V_OX</td><td>π∫f²  (discos)</td><td class="u"></td></tr><tr><td class="sym">V_OY</td><td>2π∫xf  (capas)</td><td class="u"></td></tr><tr><td class="sym">L</td><td>∫√(1+f′²)  longitud de arco</td><td class="u"></td></tr></table></div></div></details>
+<figure class="fig"><p class="ft">Figura interactiva - sumas de Riemann frente al valor exacto</p><div data-sim="riemann"></div><figcaption>Mueve los controles y lee el recuadro: la figura calcula lo mismo que tú harías a mano en el examen.</figcaption></figure>
+<h3 id="t1-formulas">Lo que tienes que saber</h3>
+<div class="box key"><ul>
+<li>Barrow \(\int_a^bf=F(b)-F(a)\) · TFC \(\frac{d}{dx}\int_{u}^{v}f=f(v)v'-f(u)u'\).</li>
+<li>Partes \(\int u\,dv=uv-\int v\,du\) (ALPES) · Hermite para raíces complejas múltiples.</li>
+<li>Impropias: \(\int_1^\infty x^{-p}\) converge si p &gt; 1; \(\int_0^1x^{-p}\) converge si p &lt; 1.</li>
+<li>\(V_{OX}=\pi\int f^2\) · \(V_{OY}=2\pi\int xf\) · \(L=\int\sqrt{1+f'^2}\) · \(S_{OX}=2\pi\int f\sqrt{1+f'^2}\).</li>
+<li>Valor medio \(\bar f=\frac1{b-a}\int_a^bf\).</li></ul></div>
+<h3 id="t1-metodo">Cómo se resuelve</h3>
+<ol class="steps"><li>Mira si la integral es inmediata (¿aparece la derivada de algo dentro?).</li><li>Si hay raíces de la forma \(\sqrt{a^2\pm x^2}\), cambio trigonométrico; si hay producto de tipos distintos, por partes; si es un cociente de polinomios, fracciones simples (Hermite si hay complejas múltiples).</li><li>En una definida con cambio de variable, <b>cambia los límites</b> y no deshagas el cambio.</li><li>Impropias: escribe el límite explícitamente, calcula la primitiva y toma el límite. Di si converge y a qué valor.</li><li>En aplicaciones, dibuja primero la región y decide el eje de giro y el método (discos o capas).</li></ol>
+<div class="box trap"><h4>Trampas típicas</h4><ul><li>Olvidar cambiar los límites de integración tras un cambio de variable.</li><li>Tratar una impropia como una integral normal: hay que escribir el límite (es lo que puntúa).</li><li>En volúmenes, olvidar el cuadrado de f o el factor \(\pi\) (o el \(2\pi\) de las capas).</li><li>Usar fracciones simples con raíces complejas sin el término de Hermite cuando están repetidas.</li></ul></div>
+<h3 id="t1-problema">Problema tipo</h3>
+<div class="prob"><div class="enun"><p class="et">Enunciado</p><p><b>(Examen Matemáticas II, parcial 1, abril 2021)</b> a) Estudiar la convergencia y calcular \(\displaystyle\int_1^{\infty}\frac{\operatorname{sen}\frac1x}{x^2}dx\) y \(\displaystyle\int_0^3\frac{x^3}{\sqrt{9-x^2}}dx\). b) Calcular el volumen del sólido generado al girar alrededor de OX la superficie limitada por \(y=\dfrac1{x^2-4x+8}\) y las rectas \(x=0\) y \(x=2\).</p></div>
+<details class="paso"><summary><span class="pn">✓</span>Ver solución paso a paso</summary><div class="inner"><p>a1) Es impropia de <b>primera especie</b> (intervalo no acotado):</p>
+<p>\(\int_1^t\frac{\operatorname{sen}(1/x)}{x^2}dx\). Con \(f(x)=\frac1x\), \(f'(x)=-\frac1{x^2}\) ⇒ primitiva \(\cos\frac1x\):</p>
+<p>\(\int_1^t\frac{\operatorname{sen}(1/x)}{x^2}dx=\left[\cos\tfrac1x\right]_1^t=\cos\tfrac1t-\cos1\) ⇒ \(\lim_{t\to\infty}=1-\cos1\approx\mathbf{0{,}4597}\): <b>converge</b>.</p>
+<p>a2) Es impropia de <b>segunda especie</b> (el integrando no está acotado en x = 3). Cambio \(x=3\operatorname{sen}u\), \(dx=3\cos u\,du\), \(\sqrt{9-x^2}=3\cos u\); límites: \(x=0\to u=0\), \(x=3\to u=\pi/2\):</p>
+<p>\(\int_0^{\pi/2}\frac{27\operatorname{sen}^3u}{3\cos u}3\cos u\,du=27\int_0^{\pi/2}\operatorname{sen}^3u\,du=27\left[-\cos u+\frac{\cos^3u}{3}\right]_0^{\pi/2}=27\left(0-(-1+\tfrac13)\right)=\mathbf{18}\): <b>converge</b>.</p>
+<p>b) \(V_{OX}=\pi\int_0^2\dfrac{dx}{(x^2-4x+8)^2}\). El denominador tiene raíces complejas <b>dobles</b> (\(x=2\pm2i\)) ⇒ <b>método de Hermite</b>. Completando cuadrados, \(x^2-4x+8=(x-2)^2+4\), y con \(x-2=2\tan u\):</p>
+<p>\(\int\frac{dx}{((x-2)^2+4)^2}=\frac{1}{16}\int\frac{2\sec^2u\,du}{\sec^4u}=\frac18\int\cos^2u\,du=\frac{1}{16}\left(u+\operatorname{sen}u\cos u\right)\).</p>
+<p>Con \(u=\arctan\frac{x-2}{2}\): en x = 0, \(u=-\frac\pi4\); en x = 2, \(u=0\).</p>
+<p>\(V=\pi\cdot\frac1{16}\left[u+\operatorname{sen}u\cos u\right]_{-\pi/4}^{0}=\frac{\pi}{16}\left(0-\left(-\frac\pi4-\frac12\right)\right)=\frac{\pi}{16}\left(\frac{\pi}{4}+\frac12\right)=\mathbf{0{,}2524}\) unidades cúbicas.</p></div></details></div>
+<h3 id="t1-auto">Autoevaluación</h3>
+<p class="muted">Responde antes de desplegar.</p><details class="paso"><summary><span class="pn">1</span>¿Cuándo es impropia de primera y cuándo de segunda especie una integral?</summary><div class="inner"><p>De primera especie si el intervalo no está acotado (\(\pm\infty\) en un límite); de segunda especie si la función no está acotada en algún punto del intervalo (asíntota vertical). En ambas hay que escribir el límite.</p></div></details><details class="paso"><summary><span class="pn">2</span>\(\int_1^{\infty}\frac{dx}{x^p}\): ¿para qué p converge?</summary><div class="inner"><p>Converge si \(p>1\) (y vale \(\frac1{p-1}\)); diverge si \(p\le1\). En \(\int_0^1\) ocurre al revés: converge si \(p<1\).</p></div></details><details class="paso"><summary><span class="pn">3</span>¿Qué dice el teorema fundamental del cálculo con límites variables?</summary><div class="inner"><p>\(\frac{d}{dx}\int_{u(x)}^{v(x)}f(t)dt=f(v(x))v'(x)-f(u(x))u'(x)\): se evalúa en los límites y se multiplica por sus derivadas (regla de la cadena).</p></div></details><details class="paso"><summary><span class="pn">4</span>¿Cuándo hace falta el método de Hermite?</summary><div class="inner"><p>Cuando el denominador de una función racional tiene raíces <b>complejas múltiples</b> (o reales múltiples): evita integrar potencias altas de factores cuadráticos, dejando una parte derivada.</p></div></details><details class="paso"><summary><span class="pn">5</span>Volumen al girar \(y=f(x)\) alrededor del eje OY entre a y b.</summary><div class="inner"><p>Por capas cilíndricas: \(V=2\pi\int_a^bx\,f(x)\,dx\). Alrededor de OX sería por discos: \(V=\pi\int f^2\).</p></div></details>
+</section>
+<nav class="pager" aria-label="Páginas"><a href="plan.html"><small>← Anterior</small>Cómo es la evaluación</a><a class="nx" href="tema-02.html"><small>Siguiente →</small>T2 · Topología, límites y continuidad en varias variables</a></nav>
+<p class="inicio" style="margin:36px 0 8px;text-align:center;font-size:13px;color:var(--muted)">Guía no oficial de Matemáticas II (UPCT, GIEyA) · Datos tomados en el curso <time datetime="2021-09">2021/22</time> (apuntes, hojas y exámenes de 2020 y 2021) · página creada en noviembre de 2026</p>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="sims.js"></script>
+</body>
+</html>
