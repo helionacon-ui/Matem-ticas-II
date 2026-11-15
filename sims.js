@@ -436,5 +436,325 @@ SIMS.extremos=el=>build(el,{w:660,h:420,
   Punto de prueba (${N2(X0)}, ${N2(Y0)}): ∇f = (${N3(gx)}, ${N3(gy)}) ⇒ ${ng<0.05?'<b>es un punto crítico</b>':'no es punto crítico (el gradiente no se anula)'}; Δ = ${N3(D)} ⇒ ${D<0?'<b>silla</b>':(fxx>0?'<b>mínimo</b>':'<b>máximo</b>')} si el gradiente fuera nulo.<br>
   <span class="hint">Criterio: Δ &gt; 0 y f<sub>xx</sub> &gt; 0 ⇒ mínimo; Δ &gt; 0 y f<sub>xx</sub> &lt; 0 ⇒ máximo; Δ &lt; 0 ⇒ silla; Δ = 0 ⇒ el criterio no decide. Alrededor de un mínimo las curvas de nivel son óvalos cerrados; en una silla se cruzan.</span>`);}});
 
-document.querySelectorAll('[data-sim]').forEach(el=>{const f=SIMS[el.dataset.sim];if(f)f(el);});
+/* ---- Segunda pasada: cinco figuras más ---- */
+const Pbox=(a,x,y,w,h,col,r)=>{const g=a.g;r=r||8;g.beginPath();g.moveTo(x+r,y);g.lineTo(x+w-r,y);g.quadraticCurveTo(x+w,y,x+w,y+r);g.lineTo(x+w,y+h-r);g.quadraticCurveTo(x+w,y+h,x+w-r,y+h);g.lineTo(x+r,y+h);g.quadraticCurveTo(x,y+h,x,y+h-r);g.lineTo(x,y+r);g.quadraticCurveTo(x,y,x+r,y);g.closePath();g.fillStyle=col;g.fill();};
+const Pfill=(a,pts,col,alpha)=>{const g=a.g;g.save();g.globalAlpha=alpha===undefined?0.22:alpha;g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=col;g.fill();g.restore();};
+const Pcurve=(a,pts,col,wd)=>{const g=a.g;g.strokeStyle=col;g.lineWidth=wd||2.4;g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();};
+
+/* T1 · convergencia de integrales impropias */
+SIMS.impropia=el=>build(el,{w:660,h:400,
+ selects:[{k:'t',v:'inf',l:'tipo de impropia',opts:[['inf','1.ª especie · ∫ de 1 a t de x^(−p)'],['cero','2.ª especie · ∫ de ε a 1 de x^(−p)']]}],
+ sliders:[{k:'p',v:1.5,min:0.1,max:3,step:0.05,l:'exponente p',u:''},{k:'k',v:1,min:0,max:3,step:0.02,l:'alcance del límite (10^k)',u:''}],
+ draw(a){a.clear();
+  const p=a.st.p,k=a.st.k,inf=a.st.t==='inf';
+  const lim=Math.pow(10,k);                       // t (inf) o 1/ε (cero)
+  const F=L=>{ // valor de la integral parcial
+    if(inf){ if(Math.abs(p-1)<1e-9)return Math.log(L); return (Math.pow(L,1-p)-1)/(1-p);}
+    const e=1/L; if(Math.abs(p-1)<1e-9)return -Math.log(e); return (1-Math.pow(e,1-p))/(1-p);};
+  const conv = inf ? p>1 : p<1;
+  const valor = conv ? (inf? 1/(p-1) : 1/(1-p)) : Infinity;
+  const act = F(lim);
+  /* --- panel izquierdo: la curva y el área --- */
+  const x0=48,y0=300,wv=250,hv=215;
+  const XA = inf? 1 : 1/lim, XB = inf? lim : 1;
+  const xmin = inf? 0.6 : 0, xmax = inf? Math.min(lim*1.08,12) : 1.15;
+  const f=x=>Math.pow(x,-p);
+  let ymax=0; for(let i=0;i<=200;i++){const x=xmin+(xmax-xmin)*i/200; if(x>0.02)ymax=Math.max(ymax,f(x));}
+  ymax=Math.min(ymax,inf?Math.max(f(0.6),1.2):6);
+  const px=x=>x0+(x-xmin)/(xmax-xmin)*wv, py=y=>y0-Math.min(y,ymax)/ymax*hv;
+  a.line(x0,y0,x0+wv,y0,C.muted,1.5); a.line(x0,y0,x0,y0-hv-6,C.muted,1.5);
+  // area sombreada
+  const pts=[[px(Math.max(XA,xmin)),y0]];
+  for(let i=0;i<=240;i++){const x=Math.max(XA,xmin)+(Math.min(XB,xmax)-Math.max(XA,xmin))*i/240; pts.push([px(x),py(f(x))]);}
+  pts.push([px(Math.min(XB,xmax)),y0]);
+  Pfill(a,pts,C.a,0.26);
+  const cur=[]; for(let i=0;i<=320;i++){const x=xmin+(xmax-xmin)*i/320; if(x<=0.02)continue; cur.push([px(x),py(f(x))]);}
+  Pcurve(a,cur,C.text,2.6);
+  a.txt('y = x^(−'+N2(p)+')',x0+8,y0-hv+4,C.text,12.5);
+  a.txt('x',x0+wv+4,y0+4,C.muted,12);
+  if(inf){a.line(px(1),y0,px(1),py(f(1)),C.a,1.2,[3,3]);a.txt('1',px(1),y0+16,C.muted,11,'center');
+    if(lim<=xmax){a.line(px(lim),y0,px(lim),py(f(lim)),C.b,1.6,[3,3]);a.txt('t = '+N2(lim),Math.min(px(lim),x0+wv-26),y0+16,C.b,11,'center');}
+    else a.txt('t = '+N2(lim)+' →',x0+wv-4,y0+16,C.b,11,'right');}
+  else {a.line(px(1),y0,px(1),py(f(1)),C.a,1.2,[3,3]);a.txt('1',px(1),y0+16,C.muted,11,'center');
+    a.line(px(1/lim),y0,px(1/lim),y0-hv,C.b,1.6,[3,3]);a.txt('ε = '+N4(1/lim),px(1/lim)+4,y0-hv+14,C.b,11);}
+  /* --- panel derecho: el valor acumulado --- */
+  const bx=360,by=300,bw=258,bh=215;
+  a.line(bx,by,bx+bw,by,C.muted,1.5); a.line(bx,by,bx,by-bh-6,C.muted,1.5);
+  let vmax=0; const vals=[];
+  for(let i=0;i<=200;i++){const kk=3*i/200,L=Math.pow(10,kk),v=F(L);vals.push([kk,v]);vmax=Math.max(vmax,v);}
+  const cap = conv? Math.max(valor*1.6,0.6) : Math.min(vmax,14);
+  const qx=kk=>bx+kk/3*bw, qy=v=>by-Math.min(Math.max(v,0),cap)/cap*bh;
+  if(conv){a.line(bx,qy(valor),bx+bw,qy(valor),C.c,1.8,[6,4]);
+    a.txt('valor límite = '+N4(valor),bx+bw-2,qy(valor)-8,C.c,12,'right');}
+  Pcurve(a,vals.map(v=>[qx(v[0]),qy(v[1])]),C.a,2.6);
+  a.circ(qx(k),qy(act),4.5,C.b,true);
+  a.line(qx(k),by,qx(k),qy(act),C.b,1,[3,3]);
+  [0,1,2,3].forEach(i=>a.txt('10^'+i,qx(i),by+16,C.muted,11,'center'));
+  a.txt(inf?'t  (escala logarítmica)':'1/ε  (escala logarítmica)',bx+bw/2,by+34,C.muted,12,'center');
+  a.txt('valor de la integral parcial',bx,by-bh-14,C.muted,12);
+  a.html(`Integral <b>${inf?'de 1.ª especie':'de 2.ª especie'}</b> con p = <b>${N2(p)}</b>.
+  Valor parcial con ${inf?'t = '+N2(lim):'ε = '+N4(1/lim)}: <b>${act>1e6?'muy grande':N4(act)}</b>.<br>
+  Criterio: ${inf?'∫ de 1 a ∞ de x^(−p) converge si <b>p &gt; 1</b>':'∫ de 0 a 1 de x^(−p) converge si <b>p &lt; 1</b>'} ⇒ aquí <b>${conv?'converge, y vale '+N4(valor):'DIVERGE'}</b>.<br>
+  <span class="hint">Sube el alcance del límite y mira la curva de la derecha: si converge se aplana contra la asíntota; si diverge sigue subiendo sin techo (con p = 1 crece como un logaritmo, despacio pero sin parar: ése es el caso frontera). Prueba p = 0,9 / 1 / 1,1 en los dos tipos y verás que el papel de p se invierte.</span>`);}});
+
+/* T2 · topología: punto, bola de prueba y clasificación */
+SIMS.topologia=el=>build(el,{w:660,h:420,
+ selects:[{k:'A',v:'corona',l:'conjunto A',opts:[
+   ['abierto','x² + y² < 4  (disco abierto)'],
+   ['cerrado','x² + y² ≤ 4  (disco cerrado)'],
+   ['corona','1 < x² + y² ≤ 4, y ≥ 0'],
+   ['semi','y > 0  (semiplano abierto)'],
+   ['cuadrado','máx(|x|,|y|) ≤ 2 sin el vértice (2,2)']]}],
+ sliders:[{k:'x',v:1.5,min:-3,max:3,step:0.05,l:'punto · x',u:''},{k:'y',v:0.9,min:-3,max:3,step:0.05,l:'punto · y',u:''},
+  {k:'r',v:0.5,min:0.05,max:1.5,step:0.01,l:'radio de la bola de prueba',u:''}],
+ draw(a){a.clear();
+  const S=a.st.A, X=a.st.x, Y=a.st.y, R=a.st.r;
+  const inA=(x,y)=>{const q=x*x+y*y;
+    if(S==='abierto')return q<4-1e-12;
+    if(S==='cerrado')return q<=4+1e-12;
+    if(S==='corona')return q>1+1e-12&&q<=4+1e-12&&y>=-1e-12;
+    if(S==='semi')return y>1e-12;
+    return Math.max(Math.abs(x),Math.abs(y))<=2+1e-12 && !(Math.abs(x-2)<1e-9&&Math.abs(y-2)<1e-9);};
+  const DES={abierto:['abierto','sí','no','sí','no'],cerrado:['cerrado','no','sí','sí','sí'],
+   corona:['ni abierto ni cerrado','no','no','sí','no'],semi:['abierto','sí','no','no','no'],
+   cuadrado:['ni abierto ni cerrado','no','no','sí','no']}[S];
+  const cx=215,cy=215,u=52;
+  // malla y ejes
+  for(let i=-3;i<=3;i++){a.line(cx+i*u,cy-3.1*u,cx+i*u,cy+3.1*u,C.grid,1);a.line(cx-3.1*u,cy-i*u,cx+3.1*u,cy-i*u,C.grid,1);}
+  a.line(cx-3.3*u,cy,cx+3.3*u,cy,C.muted,1.5);a.line(cx,cy-3.3*u,cx,cy+3.3*u,C.muted,1.5);
+  // conjunto por muestreo
+  const g=a.g,st=4;
+  g.save();g.globalAlpha=0.3;g.fillStyle=C.a;
+  for(let sx=-3.1;sx<=3.1;sx+=st/u)for(let sy=-3.1;sy<=3.1;sy+=st/u)if(inA(sx,sy))g.fillRect(cx+sx*u-st/2,cy-sy*u-st/2,st,st);
+  g.restore();
+  // frontera dibujada
+  const arc=(rad,th1,th2,col,dash)=>{const pts=[];for(let i=0;i<=120;i++){const t=th1+(th2-th1)*i/120;pts.push([cx+rad*u*Math.cos(t),cy-rad*u*Math.sin(t)]);}
+    g.strokeStyle=col;g.lineWidth=2;g.setLineDash(dash||[]);g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();g.setLineDash([]);};
+  if(S==='abierto')arc(2,0,2*Math.PI,C.b,[5,4]);
+  if(S==='cerrado')arc(2,0,2*Math.PI,C.b);
+  if(S==='corona'){arc(2,0,Math.PI,C.b);arc(1,0,Math.PI,C.b,[5,4]);
+    a.line(cx+u,cy,cx+2*u,cy,C.b,2);a.line(cx-2*u,cy,cx-u,cy,C.b,2);}
+  if(S==='semi')a.line(cx-3.3*u,cy,cx+3.3*u,cy,C.b,2,[5,4]);
+  if(S==='cuadrado'){const q=2*u;g.strokeStyle=C.b;g.lineWidth=2;g.strokeRect(cx-q,cy-q,2*q,2*q);
+    a.circ(cx+q,cy-q,3.5,C.bg,true);a.circ(cx+q,cy-q,3.5,C.b,false);}
+  // bola de prueba y punto
+  a.circ(cx+X*u,cy-Y*u,R*u,C.f,false);
+  g.save();g.globalAlpha=0.18;g.fillStyle=C.f;g.beginPath();g.arc(cx+X*u,cy-Y*u,R*u,0,6.2832);g.fill();g.restore();
+  a.circ(cx+X*u,cy-Y*u,4.5,C.text,true);
+  a.txt('x',cx+3.3*u+4,cy+4,C.muted,12);a.txt('y',cx+5,cy-3.3*u-4,C.muted,12);
+  // ¿la bola cabe? muestreo del disco de prueba
+  let anyIn=false,anyOut=false;
+  for(let i=0;i<=24;i++)for(let j=1;j<=8;j++){const th=2*Math.PI*i/24,rr=R*j/8;
+    if(inA(X+rr*Math.cos(th),Y+rr*Math.sin(th)))anyIn=true;else anyOut=true;}
+  // clasificación exacta con una bola infinitesimal
+  let eIn=false,eOut=false;const eps=0.004;
+  for(let i=0;i<=72;i++)for(let j=1;j<=3;j++){const th=2*Math.PI*i/72,rr=eps*j/3;
+    if(inA(X+rr*Math.cos(th),Y+rr*Math.sin(th)))eIn=true;else eOut=true;}
+  if(inA(X,Y))eIn=true;
+  const clase = !eOut? 'interior' : (!eIn? 'exterior' : 'de la frontera');
+  const col = clase==='interior'?C.c:(clase==='exterior'?C.muted:C.b);
+  // panel
+  const bx=430,by=70;
+  Pbox(a,bx-14,by-34,228,268,C.grid,10);
+  a.txt('Punto ('+N2(X)+', '+N2(Y)+')',bx,by-12,C.text,13);
+  a.txt('¿pertenece a A?',bx,by+16,C.muted,12.5);a.txt(inA(X,Y)?'sí':'no',bx+200,by+16,C.text,12.5,'right');
+  a.txt('es un punto…',bx,by+42,C.muted,12.5);a.txt(clase,bx+200,by+42,col,12.5,'right');
+  a.txt('la bola de radio '+N2(R)+'…',bx,by+72,C.muted,12.5);
+  a.txt(!anyOut?'cabe entera dentro de A':(!anyIn?'queda entera fuera de A':'corta A y su complementario'),bx+200,by+92,C.text,11.5,'right');
+  a.txt('A es…',bx,by+124,C.muted,12.5);a.txt(DES[0],bx+200,by+124,C.a,12.5,'right');
+  a.txt('acotado',bx,by+150,C.muted,12.5);a.txt(DES[3],bx+200,by+150,C.text,12.5,'right');
+  a.txt('compacto',bx,by+176,C.muted,12.5);a.txt(DES[4],bx+200,by+176,C.text,12.5,'right');
+  a.txt('trazo continuo: frontera incluida',bx,by+208,C.muted,11);
+  a.txt('trazo discontinuo: excluida',bx,by+224,C.muted,11);
+  a.html(`Conjunto <b>A</b>: ${{abierto:'x² + y² &lt; 4',cerrado:'x² + y² ≤ 4',corona:'1 &lt; x² + y² ≤ 4 con y ≥ 0',semi:'y &gt; 0',cuadrado:'máx(|x|,|y|) ≤ 2 quitando el vértice (2, 2)'}[S]}.
+  El punto marcado es <b>${clase}</b>, y la bola de radio ${N2(R)} ${!anyOut?'<b>cabe entera dentro</b> de A':(!anyIn?'<b>queda entera fuera</b> de A':'<b>corta a A y a su complementario</b>')}.<br>
+  A es <b>${DES[0]}</b>; acotado: <b>${DES[3]}</b>; compacto (= cerrado y acotado): <b>${DES[4]}</b>.<br>
+  <span class="hint">Definiciones en acción: un punto es <b>interior</b> si alguna bola cabe dentro de A, <b>exterior</b> si alguna bola cabe fuera, y <b>de la frontera</b> si ninguna bola, por pequeña que sea, se decide. Pon el punto justo encima del borde y baja el radio: la bola siempre corta las dos partes. Y fíjate en el cuadrado al que le falta un vértice: un conjunto puede no ser ni abierto ni cerrado por culpa de un único punto.</span>`);}});
+
+/* T3 · el error de la aproximación lineal: por qué parciales ≠ diferenciable */
+SIMS.diferenciable=el=>build(el,{w:660,h:420,
+ selects:[{k:'f',v:'A',l:'función (con f(0,0) = 0)',opts:[
+   ['A','f = xy / √(x²+y²)'],
+   ['B','f = (x³+y³) / (x²+y²)'],
+   ['C','f = x²y / (x²+y²)'],
+   ['D','f = x² + y² − xy'],
+   ['E','f = x²y² / (x²+y²)^(3/2)']]}],
+ sliders:[{k:'r',v:0.6,min:0.02,max:1,step:0.01,l:'distancia al origen r',u:''},
+  {k:'th',v:45,min:0,max:360,step:1,l:'dirección θ',u:'°'}],
+ draw(a){a.clear();
+  const S=a.st.f, R=a.st.r, TH=a.st.th*Math.PI/180;
+  const DEF={A:{f:(x,y)=>x*y/Math.hypot(x,y),gr:[0,0],nom:'xy / √(x²+y²)',dif:false,cont:true},
+   B:{f:(x,y)=>(x*x*x+y*y*y)/(x*x+y*y),gr:[1,1],nom:'(x³+y³) / (x²+y²)',dif:false,cont:true},
+   C:{f:(x,y)=>x*x*y/(x*x+y*y),gr:[0,0],nom:'x²y / (x²+y²)',dif:false,cont:true},
+   D:{f:(x,y)=>x*x+y*y-x*y,gr:[0,0],nom:'x² + y² − xy',dif:true,cont:true},
+   E:{f:(x,y)=>x*x*y*y/Math.pow(x*x+y*y,1.5),gr:[0,0],nom:'x²y² / (x²+y²)^(3/2)',dif:true,cont:true}}[S];
+  const f=DEF.f, gx=DEF.gr[0], gy=DEF.gr[1];
+  const E=(r,th)=>{const x=r*Math.cos(th),y=r*Math.sin(th);
+    if(r<1e-12)return 0; return Math.abs(f(x,y)-(gx*x+gy*y))/r;};
+  const radios=[R,R/2,R/4,R/8];
+  const cols=[C.a,C.b,C.f,C.c];
+  /* panel izquierdo: E(θ) para varios radios */
+  const x0=52,y0=300,wv=270,hv=210;
+  let emax=0.05; radios.forEach(r=>{for(let i=0;i<=180;i++)emax=Math.max(emax,E(r,2*Math.PI*i/180));});
+  emax*=1.15;
+  a.line(x0,y0,x0+wv,y0,C.muted,1.5);a.line(x0,y0,x0,y0-hv-8,C.muted,1.5);
+  const px=t=>x0+t/360*wv, py=v=>y0-Math.min(v,emax)/emax*hv;
+  [0,90,180,270,360].forEach(t=>{a.line(px(t),y0,px(t),y0-hv,C.grid,1);a.txt(t+'°',px(t),y0+16,C.muted,11,'center');});
+  radios.forEach((r,ri)=>{const pts=[];for(let i=0;i<=360;i++)pts.push([px(i),py(E(r,i*Math.PI/180))]);
+    Pcurve(a,pts,cols[ri],ri?1.6:2.6);});
+  a.txt('error relativo  |f − plano| / ‖h‖',x0,y0-hv-16,C.muted,12);
+  a.txt('θ',x0+wv+6,y0+4,C.muted,12);
+  a.circ(px(a.st.th),py(E(R,TH)),4.5,C.text,true);
+  radios.forEach((r,ri)=>{a.line(x0+6+ri*66,y0+34,x0+26+ri*66,y0+34,cols[ri],ri?1.6:2.6);
+    a.txt(ri?'r/'+Math.pow(2,ri):'r',x0+30+ri*66,y0+38,C.muted,11);});
+  a.txt(N3(emax),x0-6,y0-hv+4,C.muted,11,'right');a.txt('0',x0-6,y0+4,C.muted,11,'right');
+  /* panel derecho: la dirección elegida, E frente a r */
+  const bx=382,by=300,bw=236,bh=210;
+  a.line(bx,by,bx+bw,by,C.muted,1.5);a.line(bx,by,bx,by-bh-8,C.muted,1.5);
+  const qx=r=>bx+r/1*bw, qy=v=>by-Math.min(v,emax)/emax*bh;
+  const pr=[];for(let i=1;i<=240;i++){const r=i/240;pr.push([qx(r),qy(E(r,TH))]);}
+  Pcurve(a,pr,C.a,2.6);
+  a.circ(qx(R),qy(E(R,TH)),4.5,C.b,true);
+  a.line(qx(R),by,qx(R),qy(E(R,TH)),C.b,1,[3,3]);
+  [0,0.5,1].forEach(v=>a.txt(N2(v),qx(v),by+16,C.muted,11,'center'));
+  a.txt('r  (en la dirección θ = '+a.st.th+'°)',bx+bw/2,by+34,C.muted,12,'center');
+  a.txt('mismo error, frente a r',bx,by-bh-16,C.muted,12);
+  a.txt(N3(emax),bx-6,by-bh+4,C.muted,11,'right');a.txt('0',bx-6,by+4,C.muted,11,'right');
+  const m1=Math.max(...Array.from({length:181},(_,i)=>E(R,2*Math.PI*i/180)));
+  const m2=Math.max(...Array.from({length:181},(_,i)=>E(R/8,2*Math.PI*i/180)));
+  a.html(`f(x,y) = <b>${DEF.nom}</b> con f(0,0) = 0; gradiente en el origen ∇f(0,0) = (${gx}, ${gy}).<br>
+  Error relativo máximo sobre todas las direcciones: con r = ${N2(R)} vale <b>${N4(m1)}</b>; con r = ${N4(R/8)} vale <b>${N4(m2)}</b>.<br>
+  ⇒ ${DEF.dif?'el error <b>se encoge con r</b>: la función <b>SÍ es diferenciable</b> en el origen':'el error <b>no baja</b> al acercarse: la función <b>NO es diferenciable</b> en el origen, aunque tenga las dos parciales'}.<br>
+  <span class="hint">La definición exige que |f(h) − f(0) − ∇f·h| / ‖h‖ → 0 <b>en todas las direcciones a la vez</b>. En las tres primeras funciones el error es el mismo para cualquier r (las cuatro curvas de la izquierda se superponen): son homogéneas de grado 1 y el plano tangente nunca las aproxima mejor. En las dos últimas las curvas se van aplastando contra el eje. Mueve θ hasta el máximo de la curva: ésa es la dirección por la que falla la diferenciabilidad.</span>`);}});
+
+/* T4 · coordenadas esféricas: el elemento de volumen */
+SIMS.esfericas=el=>build(el,{w:660,h:420,
+ sliders:[{k:'R',v:2,min:0.5,max:3,step:0.05,l:'radio exterior ρ₂',u:''},
+  {k:'f1',v:0,min:0,max:180,step:1,l:'ángulo φ₁ (desde el eje z)',u:'°'},
+  {k:'f2',v:180,min:0,max:180,step:1,l:'ángulo φ₂',u:'°'},
+  {k:'dt',v:360,min:10,max:360,step:5,l:'amplitud en θ',u:'°'}],
+ draw(a){a.clear();
+  const R=a.st.R;
+  let f1=Math.min(a.st.f1,a.st.f2)*Math.PI/180, f2=Math.max(a.st.f1,a.st.f2)*Math.PI/180;
+  if(f2-f1<0.02)f2=f1+0.02;
+  const dt=a.st.dt*Math.PI/180;
+  const V=dt*(Math.cos(f1)-Math.cos(f2))*Math.pow(R,3)/3;
+  const Vesf=4*Math.PI*Math.pow(R,3)/3;
+  /* corte meridiano */
+  const cx=208,cy=198,u=52, g=a.g;
+  a.line(cx-3.2*u,cy,cx+3.2*u,cy,C.grid,1.2);
+  a.line(cx,cy-3.4*u,cx,cy+3.4*u,C.muted,1.5);
+  a.txt('z',cx+6,cy-3.4*u-4,C.muted,12);a.txt('r',cx+3.1*u,cy-8,C.muted,12);
+  // región del corte (lado derecho): entre los dos conos y dentro del radio
+  const pts=[];
+  for(let i=0;i<=80;i++){const f=f1+(f2-f1)*i/80;pts.push([cx+R*u*Math.sin(f),cy-R*u*Math.cos(f)]);}
+  pts.push([cx,cy]);
+  Pfill(a,pts,C.a,0.26);
+  const pts2=pts.map(p=>[2*cx-p[0],p[1]]);
+  Pfill(a,pts2,C.a,0.12);
+  // arcos y conos
+  const arco=(rad,col,wd)=>{const q=[];for(let i=0;i<=120;i++){const f=Math.PI*i/120;q.push([cx+rad*u*Math.sin(f),cy-rad*u*Math.cos(f)]);}
+    Pcurve(a,q,col,wd);const q2=q.map(p=>[2*cx-p[0],p[1]]);Pcurve(a,q2,col,1);};
+  arco(R,C.muted,1.2);
+  const q=[];for(let i=0;i<=120;i++){const f=f1+(f2-f1)*i/120;q.push([cx+R*u*Math.sin(f),cy-R*u*Math.cos(f)]);}
+  Pcurve(a,q,C.a,2.8);
+  a.line(cx,cy,cx+R*u*Math.sin(f1),cy-R*u*Math.cos(f1),C.b,2);
+  a.line(cx,cy,cx+R*u*Math.sin(f2),cy-R*u*Math.cos(f2),C.b,2);
+  const et=(f,txt)=>{const dx=Math.sin(f),dy=-Math.cos(f);
+    const px0=cx+0.62*R*u*dx+18*Math.cos(f), py0=cy+0.62*R*u*dy+18*Math.sin(f);
+    a.txt(txt,px0,py0+4,C.b,11.5,dx<0.15&&Math.cos(f)<0?'right':'left');};
+  et(f1,'φ₁ = '+Math.round(f1*180/Math.PI)+'°');
+  et(f2,'φ₂ = '+Math.round(f2*180/Math.PI)+'°');
+  a.txt('ρ₂ = '+N2(R),cx+R*u*Math.sin((f1+f2)/2)*0.52,cy-R*u*Math.cos((f1+f2)/2)*0.52-10,C.a,11.5);
+  a.txt('corte por un plano que contiene el eje z',cx,cy+3.4*u+24,C.muted,11.5,'center');
+  /* celda: dρ · ρdφ · ρ senφ dθ */
+  const bx=392,by=96,bw=226;
+  Pbox(a,bx-14,by-60,bw+16,276,C.grid,10);
+  a.txt('El elemento de volumen',bx,by-38,C.text,13);
+  const sx=bx+18,sy=by+6,s=52;
+  Pfill(a,[[sx,sy],[sx+s,sy-16],[sx+s+34,sy+4],[sx+34,sy+20]],C.a,0.35);
+  Pcurve(a,[[sx,sy],[sx+s,sy-16],[sx+s+34,sy+4],[sx+34,sy+20],[sx,sy]],C.a,1.6);
+  a.line(sx,sy,sx,sy+40,C.a,1.6);a.line(sx+s,sy-16,sx+s,sy+24,C.a,1.6);
+  a.line(sx+s+34,sy+4,sx+s+34,sy+44,C.a,1.6);a.line(sx+34,sy+20,sx+34,sy+60,C.a,1.6);
+  Pcurve(a,[[sx,sy+40],[sx+s,sy+24],[sx+s+34,sy+44],[sx+34,sy+60],[sx,sy+40]],C.a,1.6);
+  a.txt('dρ',sx-16,sy+58,C.a,11.5);
+  a.txt('ρ dφ',sx+s+10,sy-20,C.a,11.5);
+  a.txt('ρ senφ dθ',sx+2,sy+78,C.a,11.5);
+  const L=[['dV = ρ² senφ dρ dφ dθ',C.text],
+   ['θ de 0 a '+Math.round(dt*180/Math.PI)+'°',C.muted],
+   ['φ de '+Math.round(f1*180/Math.PI)+'° a '+Math.round(f2*180/Math.PI)+'°',C.muted],
+   ['ρ de 0 a '+N2(R),C.muted],
+   ['V = Δθ · (cosφ₁ − cosφ₂) · ρ₂³/3',C.text],
+   ['V = '+N4(V),C.a]];
+  L.forEach((d,i)=>a.txt(d[0],bx,by+108+i*24,d[1],i===5?13.5:12.5));
+  a.html(`Volumen del sector: <b>${N4(V)}</b> unidades cúbicas; la esfera completa de radio ${N2(R)} mide ${N4(Vesf)}, así que el sector es el <b>${N2(100*V/Vesf)} %</b> de ella.<br>
+  Casos para comprobar la fórmula: con φ de 0° a 180° y θ completo sale la <b>esfera</b> (4πρ³/3); con φ de 0° a 90°, la <b>media esfera</b>; con θ = 90°, un <b>cuarto</b> de lo anterior; y con φ de 0° a 45°, un <b>cono relleno de tapa esférica</b>.<br>
+  <span class="hint">El jacobiano no es un adorno: la celda de la derecha tiene lados dρ, ρ dφ y ρ senφ dθ, y su volumen es el producto, ρ² senφ dρ dφ dθ. El factor ρ² dice que las celdas lejanas son mayores, y el senφ que los «paralelos» se encogen al acercarse a los polos (en φ = 0 y φ = 180° la celda degenera). Olvidar uno de los dos es el error más caro del tema.</span>`);}});
+
+/* T5 · oscilador: regímenes de amortiguamiento y resonancia */
+SIMS.amortiguado=el=>build(el,{w:660,h:420,
+ selects:[{k:'F',v:'libre',l:'excitación',opts:[['libre','libre (F = 0), soltado desde y₀ = 1'],['res','forzado a la frecuencia propia: F = sen(ω₀t)'],['lento','forzado despacio: F = sen(ω₀t/3)']]}],
+ sliders:[{k:'m',v:1,min:0.2,max:3,step:0.05,l:'masa m  (o inductancia L)',u:''},
+  {k:'c',v:0.4,min:0,max:6,step:0.05,l:'amortiguamiento c  (o resistencia R)',u:''},
+  {k:'k',v:4,min:0.5,max:12,step:0.1,l:'rigidez k  (o 1/C)',u:''},
+  {k:'T',v:20,min:5,max:60,step:1,l:'tiempo representado',u:'s'}],
+ draw(a){a.clear();
+  const m=a.st.m,c=a.st.c,k=a.st.k,T=a.st.T,mod=a.st.F;
+  const disc=c*c-4*m*k, w0=Math.sqrt(k/m), ccr=2*Math.sqrt(m*k);
+  const reg = c<1e-9?'armónico (sin amortiguamiento)':(Math.abs(disc)<1e-9?'crítico':(disc>0?'sobreamortiguado':'subamortiguado'));
+  const wf = mod==='res'? w0 : (mod==='lento'? w0/3 : 0);
+  const Fv = t => mod==='libre'?0:Math.sin(wf*t);
+  // RK4
+  const n=1600, h=T/n, ys=[], y0=mod==='libre'?1:0, v0=0;
+  let y=y0,v=v0;
+  const d=(t,y,v)=>[v,(Fv(t)-c*v-k*y)/m];
+  ys.push([0,y]);
+  for(let i=0;i<n;i++){const t=i*h;
+    const k1=d(t,y,v),k2=d(t+h/2,y+h/2*k1[0],v+h/2*k1[1]),
+     k3=d(t+h/2,y+h/2*k2[0],v+h/2*k2[1]),k4=d(t+h,y+h*k3[0],v+h*k3[1]);
+    y+=h/6*(k1[0]+2*k2[0]+2*k3[0]+k4[0]); v+=h/6*(k1[1]+2*k2[1]+2*k3[1]+k4[1]);
+    ys.push([(i+1)*h,y]);}
+  let ym=0.2; ys.forEach(p=>ym=Math.max(ym,Math.abs(p[1]))); ym*=1.15;
+  /* gráfica y(t) */
+  const x0=50,cy=190,wv=420,hv=140;
+  a.line(x0,cy,x0+wv,cy,C.muted,1.5);a.line(x0,cy-hv-10,x0,cy+hv+10,C.muted,1.5);
+  for(let i=1;i<=4;i++){a.line(x0+wv*i/4,cy-hv,x0+wv*i/4,cy+hv,C.grid,1);
+    a.txt(N2(T*i/4)+' s',x0+wv*i/4,cy+hv+26,C.muted,11,'center');}
+  const px=t=>x0+t/T*wv, py=v=>cy-v/ym*hv;
+  // envolvente
+  if(mod==='libre'&&disc<0){const al=c/(2*m);const e1=[],e2=[];
+    for(let i=0;i<=200;i++){const t=T*i/200;e1.push([px(t),py(Math.exp(-al*t))]);e2.push([px(t),py(-Math.exp(-al*t))]);}
+    Pcurve(a,e1,C.b,1.2);Pcurve(a,e2,C.b,1.2);
+    a.txt('envolvente e^(−ct/2m)',px(T*0.5),py(Math.exp(-al*T*0.5))-8,C.b,11);}
+  Pcurve(a,ys.map(p=>[px(p[0]),py(p[1])]),C.a,2.4);
+  a.txt('y(t)',x0+4,cy-hv-16,C.muted,12);
+  a.txt(N2(ym),x0-6,cy-hv+4,C.muted,11,'right');a.txt(N2(-ym),x0-6,cy+hv+4,C.muted,11,'right');
+  /* plano de las raíces */
+  const rx=560,ry=130,ru=26;
+  a.txt('raíces λ',rx,ry-ru*3.1,C.muted,12,'center');
+  for(let i=-2;i<=2;i++){a.line(rx+i*ru,ry-2.2*ru,rx+i*ru,ry+2.2*ru,C.grid,1);a.line(rx-2.2*ru,ry-i*ru,rx+2.2*ru,ry-i*ru,C.grid,1);}
+  a.line(rx-2.3*ru,ry,rx+2.3*ru,ry,C.muted,1.4);a.line(rx,ry-2.3*ru,rx,ry+2.3*ru,C.muted,1.4);
+  let lam;
+  if(disc>=0){const s=Math.sqrt(disc);lam=[[(-c+s)/(2*m),0],[(-c-s)/(2*m),0]];}
+  else {const s=Math.sqrt(-disc);lam=[[-c/(2*m),s/(2*m)],[-c/(2*m),-s/(2*m)]];}
+  const sc=Math.max(1,...lam.map(L=>Math.max(Math.abs(L[0]),Math.abs(L[1]))))/2;
+  lam.forEach(L=>a.circ(rx+L[0]/sc*ru,ry-L[1]/sc*ru,5,C.a,true));
+  a.txt('Re',rx+2.3*ru+4,ry+4,C.muted,11);a.txt('Im',rx-6,ry-2.1*ru,C.muted,11,'right');
+  a.txt('cada división: '+N2(sc),rx,ry+2.2*ru+20,C.muted,10.5,'center');
+  /* etiquetas de régimen */
+  const bx=50,byy=cy+hv+52;
+  a.txt('discriminante c² − 4mk = '+N3(disc),bx,byy,C.muted,12.5);
+  a.txt('régimen: '+reg,bx+300,byy,reg==='subamortiguado'?C.a:(reg==='crítico'?C.c:C.b),reg.length>20?11.5:13);
+  a.txt('ω₀ = √(k/m) = '+N3(w0)+' rad/s',bx,byy+24,C.muted,12.5);
+  a.txt('c crítico = 2√(mk) = '+N3(ccr),bx+300,byy+24,C.muted,12.5);
+  const lamTxt = disc>=0? 'λ = '+N3(lam[0][0])+' y '+N3(lam[1][0])
+   : 'λ = '+N3(lam[0][0])+' ± '+N3(Math.abs(lam[0][1]))+' i';
+  a.html(`m = ${N2(m)}, c = ${N2(c)}, k = ${N2(k)} ⇒ ${lamTxt}; discriminante <b>${N3(disc)}</b> ⇒ régimen <b>${reg}</b>.
+  Frecuencia propia ω₀ = <b>${N3(w0)}</b> rad/s y amortiguamiento crítico c = <b>${N3(ccr)}</b>.<br>
+  ${mod==='libre'?'Respuesta libre desde y₀ = 1 con velocidad inicial nula.':'Forzado con F = sen('+(mod==='res'?'ω₀':'ω₀/3')+'t) partiendo del reposo.'}
+  ${mod==='res'&&c<0.05?'<b>Resonancia pura</b>: sin amortiguamiento la amplitud crece linealmente con el tiempo, y por eso el ensayo de la particular hay que multiplicarlo por x.':''}
+  ${mod==='res'&&c>=0.05?'Con c &gt; 0 la amplitud deja de crecer y se estabiliza: el amortiguamiento es lo que acota la resonancia.':''}<br>
+  <span class="hint">Baja c hasta 0 con la excitación «forzado a la frecuencia propia» y verás la resonancia; súbela hasta el valor crítico ${N3(ccr)} y el sistema deja de oscilar. Las raíces del panel derecho lo cuentan todo: reales y negativas ⇒ decaimiento sin oscilar; complejas ⇒ oscilación con envolvente e^(−ct/2m); parte real nula ⇒ oscilación que no se apaga. Es la misma ecuación de un circuito RLC con L ↔ m, R ↔ c y 1/C ↔ k.</span>`);}});
+
+document.querySelectorAll("[data-sim]").forEach(el=>{const f=SIMS[el.dataset.sim];if(f)f(el);});
 })();

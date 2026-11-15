@@ -485,6 +485,9 @@ details.paso .inner p{margin:6px 0}
 .gs-out a:hover,.gs-out a:focus-visible{border-color:var(--line);background:var(--surface)}
 .gs-out small{color:var(--muted)}
 
+details.paso>summary{overflow-x:auto;overflow-y:hidden}
+details.paso>summary::-webkit-scrollbar{height:4px}
+.prob .enun mjx-container[display="true"],.inner mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
 /* Matemáticas II: magenta */
 :root{--accent:#9c2f6b;--accent-soft:#fae6f0;--c0:#9c2f6b;--c0s:#fae6f0;--warn:#a85a1f;--warn-soft:#f9ead9;
  --c1:#9c2f6b;--c1s:#fae6f0;--c2:#7d2a7a;--c2s:#f4e5f4;--c3:#b03a62;--c3s:#fbe8ec;--c4:#8a2f55;--c4s:#f7e6ec;
