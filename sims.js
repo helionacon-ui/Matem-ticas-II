@@ -756,5 +756,42 @@ SIMS.amortiguado=el=>build(el,{w:660,h:420,
   ${mod==='res'&&c>=0.05?'Con c &gt; 0 la amplitud deja de crecer y se estabiliza: el amortiguamiento es lo que acota la resonancia.':''}<br>
   <span class="hint">Baja c hasta 0 con la excitación «forzado a la frecuencia propia» y verás la resonancia; súbela hasta el valor crítico ${N3(ccr)} y el sistema deja de oscilar. Las raíces del panel derecho lo cuentan todo: reales y negativas ⇒ decaimiento sin oscilar; complejas ⇒ oscilación con envolvente e^(−ct/2m); parte real nula ⇒ oscilación que no se apaga. Es la misma ecuación de un circuito RLC con L ↔ m, R ↔ c y 1/C ↔ k.</span>`);}});
 
+/* ---- EDO lineal de 2.º orden con condiciones iniciales, paso a paso: y'' + 4y' + 3y = 0, y(0) = 2, y'(0) = −4 ---- */
+SIMS.edoPaso=el=>build(el,{w:660,h:420,
+ sliders:[{k:'paso',v:0,min:0,max:6,step:1,l:'paso de la resolución (0 = problema)',u:''}],
+ draw(a){a.clear();const p=a.st.paso;
+  const K={c1:'#3a63c4',c2:'#2c8a52',y:'#c43d63'};
+  const X=t=>60+t*190, Y=v=>345-v*52;
+  // ejes
+  a.line(X(0),Y(0),X(3.2),Y(0),C.muted,1.5);
+  a.line(X(0),Y(0),X(0),Y(3.4),C.muted,1.5);
+  a.txt('t',X(3.2)+4,Y(0)+4,C.muted,12,'left');
+  a.txt('y',X(0)-12,Y(3.4)+4,C.muted,12,'right');
+  [1,2,3].forEach(t=>a.txt(String(t),X(t),Y(0)+16,C.muted,11,'center'));
+  // componentes y solución
+  const curve=(f,col,dash)=>{a.g.strokeStyle=col;a.g.lineWidth=2;a.g.setLineDash(dash||[]);a.g.beginPath();
+    for(let t=0;t<=3.0001;t+=0.02){const v=f(t);const x=X(t),y=Y(v);t===0?a.g.moveTo(x,y):a.g.lineTo(x,y);}a.g.stroke();a.g.setLineDash([]);};
+  if(p>=5) curve(t=>Math.exp(-t),K.c1,[6,4]);
+  if(p>=5) curve(t=>Math.exp(-3*t),K.c2,[6,4]);
+  if(p>=6) curve(t=>Math.exp(-t)+Math.exp(-3*t),K.y,null);
+  if(p>=5){a.txt('e^(−t)',X(0.8),Y(Math.exp(-0.8))-8,K.c1,12,'center');a.txt('e^(−3t)',X(0.45),Y(Math.exp(-1.35))+18,K.c2,12,'center');}
+  // ecuaciones
+  const items=[[46,1,'r² + 4r + 3 = 0',C.text],[68,2,'r₁ = −1,  r₂ = −3  (reales y distintas)',K.c1],
+    [90,3,'y = C₁·e^(−t) + C₂·e^(−3t)',C.text],[112,4,'C₁ + C₂ = 2   y   −C₁ − 3C₂ = −4',K.c2],
+    [134,5,'C₁ = 1,  C₂ = 1',K.c2],[156,6,'y(t) = e^(−t) + e^(−3t)',K.y]];
+  a.txt('Ecuación característica y solución',40,26,C.text,13,'left');
+  items.forEach(([y,k,s,c])=>{if(p>=k)a.txt(s,40,y,c,13,'left');});
+  const T=[
+   'Problema de valor inicial: y″ + 4y′ + 3y = 0 con y(0) = 2 e y′(0) = −4. Se resuelve en tres partes: solución general, condiciones iniciales y comprobación.',
+   'Ecuación característica: se sustituye y = e^(rt) y se obtiene r² + 4r + 3 = 0, un polinomio de segundo grado.',
+   'Raíces: r² + 4r + 3 = (r + 1)(r + 3) = 0, así que r₁ = −1 y r₂ = −3. Son reales y distintas, así que la solución general tiene dos exponenciales.',
+   'Solución general: y = C₁e^(−t) + C₂e^(−3t). Las constantes C₁ y C₂ se fijan con las condiciones iniciales.',
+   'Condiciones iniciales: y(0) = C₁ + C₂ = 2 y, derivando, y′(t) = −C₁e^(−t) − 3C₂e^(−3t), así que y′(0) = −C₁ − 3C₂ = −4.',
+   'Resolviendo el sistema: de la primera C₁ = 2 − C₂; sustituyendo en la segunda, −2 + C₂ − 3C₂ = −4, luego C₂ = 1 y C₁ = 1.',
+   'Comprobación: y(0) = 1 + 1 = 2 ✓ e y′(0) = −1 − 3 = −4 ✓. Las dos exponenciales decaen, así que y(t) tiende a 0 cuando t crece.'
+  ];
+  a.html(`<div>${T[p]}</div>`);
+ }});
+
 document.querySelectorAll("[data-sim]").forEach(el=>{const f=SIMS[el.dataset.sim];if(f)f(el);});
 })();
